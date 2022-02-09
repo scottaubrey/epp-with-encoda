@@ -60,4 +60,8 @@ do
 done
 
 export latestArticlesHtml
-lib/mo templates/index.html > $outputDir/index.html
+export pageHtml=$(lib/mo templates/index.html)
+lib/mo templates/layout.html > $outputDir/index.html
+
+export pageHtml=$(lib/mo templates/article.html)
+lib/mo templates/layout.html > $outputDir/article.html

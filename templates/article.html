@@ -1,0 +1,17 @@
+<article id="articlePlaceholder">
+    Loading...
+</article>
+<script>
+    var articleId = window.location.hash.substring(1); // = '#login' in your example url
+    if (articleId) {
+        //fetch article
+        fetch('/articles/'+articleId+'/index.html')
+            .then(response => response.text())
+            .then((articleHtml) => {
+                document.getElementById('articlePlaceholder').parentElement.innerHTML = articleHtml;
+            }).catch(() => document.getElementById('articlePlaceholder').innerHTML = "article not found");
+    } else {
+        document.getElementById('articlePlaceholder').innerHTML = "article not found";
+    }
+
+</script>
