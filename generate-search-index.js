@@ -3,9 +3,6 @@ var fs = require("fs");
 var lunr = require("lunr");
 const { exit } = require("process");
 
-console.log(argv);
-exit;
-
 const articleObj = JSON.parse(fs.readFileSync(argv[3]).toString());
 const articleObjs = [articleObj];
 
