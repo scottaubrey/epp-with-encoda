@@ -34,11 +34,11 @@ do
     for articleFolder in $publisherFolder/*
     do
         # get article summary details
-        export title=$(jq -r .title  $outputDir/articles/10.34196/ijm.00202/article.json)
-        export description=$(jq -r .description  $outputDir/articles/10.34196/ijm.00202/article.json)
-        export articleUrl="${articleFolder#$outputDir}/"
+        export title=$(jq -r .title  $articleFolder/article.json)
+        export description=$(jq -r .description  $articleFolder/article.json)
+        export articleUrl="article.html#${articleFolder#"$outputDir/articles/"}"
 
-        authors=$(jq -c -r '.authors[]|{givenName: .givenNames[], familyName:.familyNames[], email:.emails[]}' $outputDir/articles/10.34196/ijm.00202/article.json)
+        authors=$(jq -c -r '.authors[]|{givenName: .givenNames[], familyName:.familyNames[], email:.emails[]}' $articleFolder/article.json)
         authorsHtml=""
         oldIFS="$IFS"
         IFS=$'\n'
