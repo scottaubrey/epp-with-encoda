@@ -36,7 +36,7 @@ do
         # get article summary details
         export title=$(jq -r .title  $articleFolder/article.json)
         export description=$(jq -r .description  $articleFolder/article.json)
-        export articleUrl="article.html#${articleFolder#"$outputDir/articles/"}"
+        export articleUrl="${articleFolder#$outputDir}/"
 
         authors=$(jq -c -r '.authors[]|{givenName: .givenNames[], familyName:.familyNames[], email:.emails[]}' $articleFolder/article.json)
         authorsHtml=""
