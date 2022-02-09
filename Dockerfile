@@ -14,6 +14,7 @@ ADD data data
 ADD templates templates
 
 ADD generate-article.js generate-article.js
+ADD generate-search-index.js generate-search-index.js
 ADD generate-static-articles.sh generate-static-articles.sh
 
 RUN bash generate-static-articles.sh

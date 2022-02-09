@@ -2,12 +2,12 @@
 
 inputDir=${ARTICLE_DATA_DIR:-$(pwd)/data}
 outputDir=${HTML_OUTPUT_DIR:-$(pwd)/html}
+indexPath=${INDEX_OUTPUT_PATH:-$outputDir/search.index}
 
 encodaPath=${ENCODA_PATH:-node_modules/.bin/encoda}
 
 # clear directory
 rm -R $outputDir/* 2> /dev/null
-
 
 for publisherFolder in $inputDir/*
 do
@@ -23,7 +23,8 @@ do
 
         mkdir -p $outputArticleFolder
 
-        node generate-article.js $articleFile $outputArticleFolder $articleId
+        node generate-article.js $articleFile $outputArticleFolder "$publisherId/$articleId"
+        node generate-search-index.js $indexPath $outputDir/articles/$publisherId/$articleId/article.json
     done
 done
 

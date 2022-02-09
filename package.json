@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@stencila/encoda": "^0.119.2"
+    "@stencila/encoda": "^0.119.2",
+    "lunr": "^2.3.9"
   }
 }
