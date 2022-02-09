@@ -11,7 +11,7 @@ encoda.convert(
         "encodeOptions": {
             "isStandalone": true,
             "bundle": true,
-            "theme": "elife"
+            "theme": "skeleton"
         }
     }
 ).then(() => encoda.convert(
@@ -23,7 +23,7 @@ encoda.convert(
             "encodeOptions": {
                 "isStandalone": false,
                 "bundle": false,
-                "theme": "elife"
+                "theme": "skeleton"
             }
         }
     )
