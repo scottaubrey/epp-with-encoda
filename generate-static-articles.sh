@@ -6,7 +6,7 @@ outputDir=${HTML_OUTPUT_DIR:-$(pwd)/html}
 encodaPath=${ENCODA_PATH:-node_modules/.bin/encoda}
 
 # clear directory
-rm -R $outputDir/*
+rm -R $outputDir/* 2> /dev/null
 
 
 for publisherFolder in $inputDir/*
@@ -34,11 +34,11 @@ do
     for articleFolder in $publisherFolder/*
     do
         # get article summary details
-        export title=$(jq -r .title  html/articles/10.34196/ijm.00202/article.json)
-        export description=$(jq -r .description  html/articles/10.34196/ijm.00202/article.json)
+        export title=$(jq -r .title  $outputDir/articles/10.34196/ijm.00202/article.json)
+        export description=$(jq -r .description  $outputDir/articles/10.34196/ijm.00202/article.json)
         export articleUrl="${articleFolder#$outputDir}/"
 
-        authors=$(jq -c -r '.authors[]|{givenName: .givenNames[], familyName:.familyNames[], email:.emails[]}' html/articles/10.34196/ijm.00202/article.json)
+        authors=$(jq -c -r '.authors[]|{givenName: .givenNames[], familyName:.familyNames[], email:.emails[]}' $outputDir/articles/10.34196/ijm.00202/article.json)
         authorsHtml=""
         oldIFS="$IFS"
         IFS=$'\n'
@@ -49,7 +49,6 @@ do
             export email=$(echo "$author"| jq -r '.email')
 
             authorsHtml="$authorsHtml$(lib/mo templates/article-author.html)"
-            echo $authorsHtml
         done
         IFS="$oldIFS"
 
