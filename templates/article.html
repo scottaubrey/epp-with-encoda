@@ -1,6 +1,24 @@
 <article id="articlePlaceholder">
     Loading...
 </article>
+
+<aside id="enhanced">
+    <div id="articleDetails">
+        ID: <span id="doi"></span>
+    </div>
+    <div id="enahanceDetails">
+        Here is some "enhanced" Content
+    </div>
+</aside>
+
+<style>
+    #enhanced {
+        position: absolute;
+        top: 10px;
+        width: 300px;
+    }
+</style>
+
 <script>
     var articleId = window.location.hash.substring(1); // = '#login' in your example url
     if (articleId) {
@@ -8,10 +26,27 @@
         fetch('/articles/'+articleId+'/index.html')
             .then(response => response.text())
             .then((articleHtml) => {
-                document.getElementById('articlePlaceholder').parentElement.innerHTML = articleHtml;
-            }).catch(() => document.getElementById('articlePlaceholder').innerHTML = "article not found");
+                var articleElement = document.createRange().createContextualFragment(articleHtml)
+                document.getElementById('articlePlaceholder').parentElement.replaceChild(
+                    articleElement,
+                    document.getElementById('articlePlaceholder')
+                );
+            }).catch((e) => {
+                console.log(e);
+                document.getElementById('articlePlaceholder').innerHTML = "article not found"
+            });
+
+        fetch('/articles/'+articleId+'/article.json')
+            .then(response => response.json())
+            .then((articleJson) => {
+                //find DOI
+                var dio = articleJson.identifiers.reduce((dio, identifier) => dio || identifier.name == "dio" ? identifier.value : null);
+                document.getElementById('doi').innerText = dio;
+            }).catch((e) => {
+                console.log(e); document.getElementById('articleDetails').innerHTML = "article JSON not found"
+            });
+
     } else {
         document.getElementById('articlePlaceholder').innerHTML = "article not found";
     }
-
 </script>
