@@ -16,10 +16,70 @@
     </head>
 
 <body>
+    <div>
+        <label for="search">Search:</label>
+        <input id="search">
+    </div>
+
     <main role="main"  data-itemscope="root">
         <h1>Article viewer</h1>
         {{pageHtml}}
     </main>
+
+
+    <dialog id="searchResultsDialog">
+        <h1>Search results</h1>
+        <div id="searchResults">
+
+        </div>
+    </dialog>
+
+
+    <script>
+        var idx = null;
+        fetch('/search.index').then(
+            response => response.json()
+            ).then(data => idx = lunr.Index.load(data));
+
+        document.getElementById('search').addEventListener("keyup", (event) => search(event.target.value));
+
+        function search(searchTerm) {
+            var searchResultElement = document.getElementById("searchResults");
+            var searchResultDialogElement = document.getElementById("searchResultsDialog");
+            if (searchTerm == "") {
+                searchResultDialogElement.removeAttribute("open");
+                return;
+            }
+            searchResultDialogElement.hasAttribute("open") || searchResultDialogElement.setAttribute("open", "");
+            searchResultElement.innerHTML = "";
+
+            var results = idx.search(searchTerm)
+
+            results.forEach(function(result) {
+
+                fetch('/articles/'+result.ref+'/article.json')
+                    .then(response => response.json())
+                    .then(function(articleObj) {
+
+                    var titleElement = document.createElement("h2");
+                        titleElement.innerText = articleObj.title;
+                    var descriptionElement = document.createElement("p");
+                        descriptionElement.innerText = articleObj.description;
+
+
+
+                    var resultLinkElement = document.createElement("a")
+                    resultLinkElement.innerHTML = result.ref;
+                    resultLinkElement.setAttribute("href", "/articles/"+result.ref+"/index.html");
+
+                    searchResultElement.appendChild(titleElement);
+                    searchResultElement.appendChild(descriptionElement);
+                    searchResultElement.appendChild(resultLinkElement);
+                });
+
+            });
+        }
+    </script>
 </body>
 
 </html>

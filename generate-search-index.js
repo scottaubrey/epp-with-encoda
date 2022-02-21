@@ -7,8 +7,12 @@ const articleObj = JSON.parse(fs.readFileSync(argv[3]).toString());
 const articleObjs = [articleObj];
 
 const articleDocs = articleObjs.map(function(articleObj) {
-    var authors = articleObj.authors.map((author) => author.givenNames.join(" ")+" "+author.familyNames.join(" ")+" <"+author.emails.join("><")+">");
-    // authors = authors.join("\n");
+    var authors = articleObj.authors.map(function (author) {
+        authorString = "";
+        authorString += author.givenNames ? author.givenNames.join(" ") : "";
+        authorString += author.familyNames ? author.familyNames.join(" ") : "";
+        authorString += author.emails ? "<"+author.emails.join("><")+">" : "";
+    });
 
     return {
         "id": "10.34196/ijm.00202",
