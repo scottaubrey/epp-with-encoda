@@ -1,4 +1,4 @@
-<article id="articlePlaceholder">
+<article id="articleViewer">
     Loading...
 </article>
 
@@ -20,21 +20,24 @@
 </style>
 
 <script>
-    var articleId = window.location.hash.substring(1);
+    window.addEventListener("hashchange", () => openArticle(window.location.hash.substring(1)));
 
-    if (articleId) {
+    openArticle(window.location.hash.substring(1));
+
+    function openArticle(articleId) {
+
         //fetch article
         fetch('/articles/'+articleId+'/article.html')
             .then(response => response.text())
             .then((articleHtml) => {
                 var articleElement = document.createRange().createContextualFragment(articleHtml)
-                document.getElementById('articlePlaceholder').parentElement.replaceChild(
+                document.getElementById('articleViewer').replaceChild(
                     articleElement,
-                    document.getElementById('articlePlaceholder')
+                    document.getElementById('articleViewer').childNodes[0]
                 );
             }).catch((e) => {
                 console.log(e);
-                document.getElementById('articlePlaceholder').innerHTML = "article not found"
+                document.getElementById('articleViewer').innerHTML = "article not found"
             });
 
         fetch('/articles/'+articleId+'/article.json')
@@ -46,8 +49,8 @@
             }).catch((e) => {
                 console.log(e); document.getElementById('articleDetails').innerHTML = "article JSON not found"
             });
-
-    } else {
-        document.getElementById('articlePlaceholder').innerHTML = "article not found";
     }
+
+
+
 </script>
