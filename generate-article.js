@@ -9,7 +9,7 @@ encoda.convert(
         "from" : 'jats',
         "to": 'html',
         "encodeOptions": {
-            "isStandalone": true,
+            "isStandalone": false,
             "bundle": true,
             "theme": "skeleton"
         }
