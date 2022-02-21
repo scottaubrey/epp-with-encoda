@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,9 +10,18 @@
     <script src="https://unpkg.com/@stencila/thema@2/dist/themes/skeleton/index.js" type="text/javascript"></script>
     <script src="https://unpkg.com/@stencila/components@<=1/dist/stencila-components/stencila-components.esm.js" type="module"></script>
     <script src="https://unpkg.com/@stencila/components@<=1/dist/stencila-components/stencila-components.js" type="text/javascript" nomodule=""></script>
-    <style>[data-itemscope='root'] {
-        --max-width: 900px;
-    }
+    <script src="https://unpkg.com/lunr/lunr.js"></script>
+    <style>
+        [data-itemscope='root'] {
+            --max-width: 900px !important;
+        }
+        #searchResultsDialog {
+            position:fixed;
+            top: 10%;
+            width: 90%;
+            background: #F3F3F3;
+            box-shadow: 5px 5px #333333 5px;
+        }
     </style>
     </head>
 
@@ -44,6 +54,9 @@
         document.getElementById('search').addEventListener("keyup", (event) => search(event.target.value));
 
         function search(searchTerm) {
+
+            console.log("DEBUG: searchTerm", searchTerm);
+
             var searchResultElement = document.getElementById("searchResults");
             var searchResultDialogElement = document.getElementById("searchResultsDialog");
             if (searchTerm == "") {
@@ -70,7 +83,8 @@
 
                     var resultLinkElement = document.createElement("a")
                     resultLinkElement.innerHTML = result.ref;
-                    resultLinkElement.setAttribute("href", "/articles/"+result.ref+"/index.html");
+                    resultLinkElement.setAttribute("href", "article.html#"+result.ref);
+                    resultLinkElement.addEventListener("click", () => document.getElementById("searchResultsDialog").removeAttribute("open"));
 
                     searchResultElement.appendChild(titleElement);
                     searchResultElement.appendChild(descriptionElement);
