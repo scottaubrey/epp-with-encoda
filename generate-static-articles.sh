@@ -25,6 +25,13 @@ do
 
         node generate-article.js $articleFile $outputArticleFolder "$publisherId/$articleId"
         node generate-search-index.js $indexPath $outputDir/articles/$publisherId/$articleId/article.json
+
+        # tidy up and replace URLs to media
+        rm -R $outputArticleFolder/article.json.media
+        mv $outputArticleFolder/article.html.media $outputArticleFolder/media
+
+        sed -i '' "s#article.html.media#/articles/$publisherId/$articleId/media#g" "$outputArticleFolder/article.html"
+        sed -i '' "s#article.json.media#/articles/$publisherId/$articleId/media#g" "$outputArticleFolder/article.json"
     done
 done
 
